@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+</head>
+<body>
+
+  <label>Enter Task:</label>
+  <input type="text" id="taskInput" />
+  <button id="addBtn">Add Task</button>
+
+  <br><br>
+
+  <table border="1">
+    <tr>
+      <th>Task</th>
+      <th>Status</th>
+      <th>Action</th>
+    </tr>
+    <tbody id="taskTable"></tbody>
+  </table>
+
+  <script>
+    document.getElementById("addBtn").addEventListener("click", function () {
+      let taskText = document.getElementById("taskInput").value;
+
+      if (taskText === "") {
+        alert("Please enter a task.");
+        return;
+      }
+
+      // Create row and cells
+      let row = document.createElement("tr");
+
+      // Task name cell
+      let taskCell = document.createElement("td");
+      taskCell.textContent = taskText;
+      row.append(taskCell);
+
+      // Status cell
+      let statusCell = document.createElement("td");
+      statusCell.textContent = "Pending";
+      row.append(statusCell);
+
+      // Action buttons cell
+      let actionCell = document.createElement("td");
+
+      // Done button
+      let doneBtn = document.createElement("button");
+      doneBtn.textContent = "Mark Done";
+      doneBtn.addEventListener("click", function () {
+        if (statusCell.textContent === "Pending") {
+          statusCell.textContent = "Done";
+          taskCell.style.textDecoration = "line-through";
+        } else {
+          statusCell.textContent = "Pending";
+          taskCell.style.textDecoration = "none";
+        }
+      });
+
+      // Delete button
+      let delBtn = document.createElement("button");
+      delBtn.textContent = "Delete";
+      delBtn.style.marginLeft = "5px";
+      delBtn.addEventListener("click", function () {
+        row.remove();
+      });
+
+      // Add buttons to action cell
+      actionCell.append(doneBtn);
+      actionCell.append(delBtn);
+      row.append(actionCell);
+
+      // Add row to table
+      document.getElementById("taskTable").append(row);
+
+      // Clear input
+      document.getElementById("taskInput").value = "";
+    });
+  </script>
+
+</body>
+</html>
