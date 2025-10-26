@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DatabaseSample</title>
+</head>
+<body>
+    <form>
+        Enter Your Name : <input type="text" id="btn1" name="Student Name"><br>
+        Enter Your Roll no : <input type="text" id="btn3" name="Student Roll no"><br>
+        Enter Student Marks : <input type="text" id="btn2" name="Student Marks"><br><br>
+
+        <button id="insert" type="button">Insert</button>
+        <button id="delete" type="button">Delete</button>
+        <button id="update" type="button">Update</button>
+    </form>
+
+    <script>
+        // INSERT
+        async function insertData() {
+            let name = document.getElementById("btn1").value;
+            let marks = document.getElementById("btn2").value;
+
+            let formdata = new FormData();
+            formdata.append("sname", name);
+            formdata.append("smarks", marks);
+
+            let response = await fetch("http://localhost/PHP_PROGRAM/getdata.php", {
+                method: 'POST',
+                body: formdata
+            });
+            alert(await response.text());
+        }
+
+        // DELETE
+        async function deleteData() {
+            let roll = prompt("Enter Roll_No of student to delete:");
+            if (!roll) return;
+
+            let formdata = new FormData();
+            formdata.append("sroll", roll);
+
+            let response = await fetch("http://localhost/PHP_PROGRAM/getdata1.php", {
+                method: 'POST',
+                body: formdata
+            });
+            alert(await response.text());
+        }
+
+        // UPDATE
+        async function updateData() {
+            let roll = prompt("Enter Roll_No of student to update:");
+            if (!roll) return;
+
+            let newName = prompt("Enter new name:");
+            let newMarks = prompt("Enter new marks:");
+
+            let formdata = new FormData();
+            formdata.append("sroll", roll);
+            formdata.append("sname", newName);
+            formdata.append("smarks", newMarks);
+
+            let response = await fetch("http://localhost/PHP_PROGRAM/getdata2.php", {
+                method: 'POST',
+                body: formdata
+            });
+            alert(await response.text());
+        }
+
+        document.getElementById("insert").addEventListener("click", insertData);
+        document.getElementById("delete").addEventListener("click", deleteData);
+        document.getElementById("update").addEventListener("click", updateData);
+    </script>
+</body>
+</html>
