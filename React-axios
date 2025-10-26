@@ -1,0 +1,81 @@
+//Ass-7-->Write a React program that uses Axios to fetch data from a public or back-end API, displays the response in a component, and manages loading and error states on the front end
+//App.js
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+function App() {
+  // Step 1: Create state variables
+  const [posts, setPosts] = useState([]);      // To store the API data
+  const [loading, setLoading] = useState(true); // To show a loading message
+  const [error, setError] = useState(null);     // To show any error messages
+
+  // Step 2: Use useEffect to fetch data when the component loads
+  useEffect(() => {
+    // Create an async function to fetch data
+    const fetchData = async () => {
+      try {
+        // Make GET request to a free public API
+        const response = await axios.get("https://jsonplaceholder.typicode.com/posts");
+        
+        // Update state with the fetched data
+        setPosts(response.data);
+      } catch (err) {
+        // If something goes wrong, store the error message
+        setError("Something went wrong while fetching data!");
+      } finally {
+        // Stop showing the loading message
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty [] means this runs only once when the component mounts
+
+  // Step 3: Display loading, error, or data
+  if (loading) return <p>Loading data...</p>;
+  if (error) return <p style={{ color: "red" }}>{error}</p>;
+
+  return (
+    <div style={styles.container}>
+      <h1>Posts from API</h1>
+      <ul style={styles.list}>
+        {posts.slice(0, 10).map((post) => (
+          <li key={post.id} style={styles.listItem}>
+            <strong>{post.title}</strong>
+            <p>{post.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// Some simple CSS styles in JS
+const styles = {
+  container: {
+    fontFamily: "Arial, sans-serif",
+    padding: "20px",
+  },
+  list: {
+    listStyleType: "none",
+    padding: 0,
+  },
+  listItem: {
+    border: "1px solid #ddd",
+    padding: "10px",
+    marginBottom: "10px",
+    borderRadius: "5px",
+    backgroundColor: "#f9f9f9",
+  },
+};
+
+export default App;
+
+//index.js
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+
